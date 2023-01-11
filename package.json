@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mathlifier": "^1.2.2",
+    "svelte-katex": "^0.1.2"
+  },
+  "devDependencies": {
+    "rehype-katex-svelte": "^1.1.2",
+    "remark-math": "^2.0.1"
+  }
+}

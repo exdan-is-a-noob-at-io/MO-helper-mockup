@@ -1,0 +1,1 @@
+<img src="https://math.now.sh?color=white&inline=\\LaTeX" alt="sus" />

@@ -1,71 +1,170 @@
 <script lang="ts">
-    import type { LayoutData } from './$types';
+    import type { LayoutData } from "./$types";
+    import { goto } from "$app/navigation";
+    import logo from "$lib/images/Logo.svg";
 
     export let data: LayoutData;
 </script>
 
 <nav>
-    <!--object data="$lib/images/Logo.svg" width="300" height="300" title="logo"> </object>-->
-    <span>
-        <a href="/">Home</a>
-        <a href="/contact">Contact Us</a>
-    </span>
-    <span id="account">
-        <a href="/login">Login</a>
-        <a href="/signUp">Sign Up</a>
-    </span>
+    <ul id="pages">
+        <li>
+            <a href="/">
+                <img src={logo} alt="StackUnderflow"/>
+            </a>            
+        </li>
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a href="/contact">Contact Us</a>
+        </li>
+    </ul>
+    <ul id="account">
+        <li>
+            <a href="/login">Login</a>
+        </li>
+        <li>
+            <button on:click={() => goto("/signUp")}>
+                Sign Up
+            </button>
+        </li>
+    </ul>
 </nav>
 
-<slot></slot>
+<div class="main">
+    <slot />
+</div>
 
-<!--footer-->
 <footer>
-    <p>Author: nya nya tuturu</p>
-    <p><a href="deeznuts@example.com">deeznuts@example.com</a></p>
+    <ul>
+        <li>
+            <a href="/">
+                <img src={logo} alt="StackUnderflow"/>
+            </a>            
+            <div>
+                by monya~
+            </div>
+        </li>
+        <li>
+            <a href="/contact">
+                Contact us
+            </a>
+        </li>
+    </ul>
 </footer>
 
 
 <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("$lib/Poppins-Regular.ttf");
-    }
-
-    @font-face {
-        font-family: "Poppins";
-        src: url("$lib/Poppins-Bold.ttf");
-    }
-
-    
-
-    
-
     :global(body) {
         background: linear-gradient(#0F0C1D, #0B0621);
         min-height: 100vh;
     }
 
-    * > a {
+    :global(*) {
+        --primary-color-900: #fff;
+        --primary-color-700: #B09AEF;
+        --primary-color-600: #6B3DB7;
+        --primary-color-300: #534F7F;
+        --primary-background-400: #291C51;
+        --primary-background-300: #0B0621;
+        --primary-background-200: #0F0C1D;
+        --primary-background-100: #020007;
+        --primary-accent: #8157FF;
+
+        padding: 0;
+        margin: 0;
+
         font-family: 'Poppins';
-        font-style: bold;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
         color: #FFFFFF;
-        display: inline-block
+        font-size: 1rem;
+
+        text-rendering: optimizeLegibility;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
     }
 
-    nav:first-child {
-        margin-right: auto;
+    @font-face {
+        font-family: "Poppins";
+        src: url("$lib/fonts/Poppins-Regular.ttf");
+        font-weight: normal;
     }
 
-    nav:nth-child(1) {
-        margin-left: auto;
+    @font-face {
+        font-family: "Poppins";
+        src: url("$lib/fonts/Poppins-Bold.ttf");
+        font-weight: bold;
     }
 
-    nav {   
-        width: 100%;
-        background-color: #00864e;
+    a {
+        font-weight: bold;
+        line-height: 24px;
+        text-decoration: none;
     }
 
+    nav {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        left: 7.56rem;
+        right: 7.56rem;
+        top: 5.58rem;
+        z-index: 100;
+    }
+
+    img {
+        display: block;
+    }
+
+    ul {
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.44rem;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    button {
+        border: 0;
+        background: var(--primary-accent);
+        border-radius: 8px;
+        padding: 0.75rem 2.5rem;
+        font-weight: bold;
+
+        cursor: pointer;
+        transition: all 0.1s ease-in-out;
+    }
+
+    button:hover {
+        background: var(--primary-background-400);
+    }
+
+    footer {
+        padding: 2.7rem 17.34rem 7.27rem 17.34rem;
+
+        background: var(--primary-background-100);
+    }
+
+    footer > ul {
+        justify-content: space-between;
+    }
+    
+    footer > ul > li:first-of-type {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    footer > ul > li:first-of-type * {
+        color: var(--primary-color-300);
+    }
+
+    .main {
+        min-height: 100vh;
+    }
 </style>
