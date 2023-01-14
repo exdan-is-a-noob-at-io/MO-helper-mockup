@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type { LayoutData } from "./$types";
+    //import type { LayoutData } from "./$types";
     import { goto } from "$app/navigation";
     import logo from "$lib/images/Logo.svg";
 
-    export let data: LayoutData;
+    //export let data: LayoutData;
+    export const prerender = true;
 </script>
 
 <nav>
@@ -62,7 +63,8 @@
     }
 
     :global(*) {
-        --primary-color-900: #fff;
+        --primary-color-900: #E7E6FB;
+        --primary-color-800: #C2B0F7;
         --primary-color-700: #B09AEF;
         --primary-color-600: #6B3DB7;
         --primary-color-300: #534F7F;
@@ -72,11 +74,12 @@
         --primary-background-100: #020007;
         --primary-accent: #8157FF;
 
+        --primary-font: "Poppins";
+
         padding: 0;
         margin: 0;
 
-        font-family: 'Poppins';
-        color: #FFFFFF;
+        color: var(--primary-color-900);
         font-size: 1rem;
 
         text-rendering: optimizeLegibility;
@@ -112,6 +115,7 @@
         right: 7.56rem;
         top: 5.58rem;
         z-index: 100;
+        font-family: var(--primary-font);
     }
 
     img {
@@ -138,6 +142,7 @@
 
         cursor: pointer;
         transition: all 0.1s ease-in-out;
+        font-family: var(--primary-font);
     }
 
     button:hover {
@@ -146,7 +151,7 @@
 
     footer {
         padding: 2.7rem 17.34rem 7.27rem 17.34rem;
-
+        font-family: var(--primary-font);
         background: var(--primary-background-100);
     }
 
@@ -166,5 +171,6 @@
 
     .main {
         min-height: 100vh;
+        font-family: var(--primary-font);
     }
 </style>

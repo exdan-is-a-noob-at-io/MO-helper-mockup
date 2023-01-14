@@ -1,55 +1,156 @@
-<script>
-	// import Component
-	import Katex from "$lib/Katex.svelte"
-	
-	// math equations
-	const math1 = "ax^2+bx+c=0";
-	const math2 = "x=-\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}";
-	const math3 = "V=\\frac{1}{3}\\pi r^2 h";
-	
-	// set up array and index for reactivity and initialize
-	const mathArray = [math1, math2, math3];
-	let index = 0;
-	$: math = mathArray[index];
-	
-	// changeMath function for button click
-	function changeMath() {
-		// increase index
-		index = (index+1)%3;
-	}
+<script lang="ts">
+    // import type { PageData } from './$types';
+    import send from "$lib/images/send.svg";
+    import { fly } from 'svelte/transition';
+
+    function submit() {
+        alert("Thanks for the feedback!");
+    }
 </script>
 
-<h1>KaTeX svelte component demo</h1>
-
-<h2>Inline math</h2>
-Our math equation: <Katex {math}/> and it is inline.
-
-<h2>Displayed math</h2>
-Our math equation: <Katex {math} displayMode/> and it is displayed.
-
-<h2>Reactivity</h2>
-<button on:click={changeMath}>
-	Displaying equation {index}
-</button>
-
-<h2>Static math expression within HTML</h2>
-<Katex math={"V=\\pi\\textrm{ m}^3"}/>
-
-<h2>
-	Slot based Svelte Component
-</h2>
-Check out <a rel="external" href="https://www.npmjs.com/package/svelte-katex">Svelte KaTeX</a> for an implementation of a Svelte KaTeX component that takes markup via slots
-
-<h2>
-	Disucssion of various approaches
-</h2>
-Visit <a rel="external" href="https://svelte-math.vercel.app">Svelte Math</a> to see a discussion of various ways to implement math in Svelte/SvelteKit.
+<main transition:fly="{{ y: 10, duration: 200 }}">
+    <form on:submit|preventDefault={submit}>
+        <div>
+            <h1>Have a Suggestion?</h1>
+            <p>Let us Know!</p>
+        </div>
+        <div>
+            <label for="name" class="textboxHeader">Name</label>
+            <input type="text" name="name">
+        </div>
+        <div>
+            <label for="email" class="textboxHeader">Email</label>
+            <input type="email" name="email">
+        </div>
+        <div>
+            <label for="message" class="textboxHeader">Message</label>
+            <textarea name="message"></textarea>
+            <!-- <input type="text" name="message" aria-multiline="true"> -->
+        </div>
+        <div>
+            <input type="submit" value="Send    ">
+            <img alt="Send icon" src={send} />
+        </div>
+    </form>
+</main>
 
 <style>
-	a {
-		background-color: lightgray;
-		text-decoration: underline;
-		font-weight: 700;
-		padding: 0.5em;
-	}
+    main {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-style: bold;
+    }
+
+    p {
+        color: var(--primary-color-900);
+    }
+
+    form > div:not(:last-of-type) {
+        display: flex;
+        flex-direction: column;
+        margin-top: 3.3rem;
+        position: relative;
+    }
+
+    form > div:first-of-type {
+        margin-top: 0;
+    }
+
+    label {
+        position: absolute;
+        top: -1.8rem;
+        left: 0.08rem;
+        color: var(--primary-color-800);
+        font-size: 0.84rem;
+    }
+
+    input:not([type=submit]) {
+        background: var(--primary-background-100);
+
+        width: 304px;
+        height: 2.64rem;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 0 1rem;
+
+        color: var(--primary-background-900);
+        border: 2px solid #7671B0;
+        box-shadow: inset 0px -4px 4px #1A132C;
+
+        position: relative;
+        word-break: break-word;
+    }
+
+    textarea {
+        background: var(--primary-background-100);
+
+        width: 551px;
+        height: 212px;
+        box-sizing: border-box;
+        padding: 10px 1rem;
+        resize: none;
+
+        background: var(--primary-background-100);
+        border: 2px solid #7671B0;
+        box-shadow: inset 0px -4px 4px #1A132C;
+        border-radius: 8px;
+
+        position: relative;
+    }
+
+    form > div:last-of-type {
+        position: relative;
+        display: block;
+        width: fit-content;
+        margin-top: 2rem;
+        margin-left: auto;
+    }
+
+    form > div:last-of-type img {
+        position: absolute;
+        height:100%;
+        width:16px;
+        display: block;
+        right: 1.6rem;
+        top: 0;
+    }
+
+    input[type=submit] {
+        background: var(--primary-accent);
+        border: none;
+        outline: none;
+
+        width: 158px;
+        height: 49px;
+
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        font-weight: bold;
+
+        height: 2.64rem;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 0 1rem;
+
+        box-shadow: 0px 4px 0px 0px rgba(80, 32, 223, 1);
+        transition: all 0.1s ease-in-out;
+
+        cursor: pointer;
+    }
+
+    form > div:last-of-type:hover {
+        box-shadow: 0px 2px 0px 0px rgba(80, 32, 223, 1);
+        transform: translateY(2px);
+    }
+
+    form > div:last-of-type:active {
+        box-shadow: 0px 0px 0px 0px rgba(80, 32, 223, 1);
+        transform: translateY(4px);
+        filter: brightness(80%) hue-rotate(-5deg);
+    }
 </style>

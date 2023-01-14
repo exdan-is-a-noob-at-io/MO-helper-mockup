@@ -1,5 +1,6 @@
 <script lang="ts">
     import SearchInput from "$lib/components/SearchInput.svelte";
+    import { fly } from 'svelte/transition';
 
     const queryRecommendations = [
         {
@@ -30,20 +31,101 @@
     
     let query = "";
     const search = () => {
-        alert("deez nuts!")        
+        //alert("deez nuts!")
+        updatePageSelector(1)
     }
 
+    import type {QuestionProps} from "$lib/components/QuestionCard.svelte";
     import QuestionCard from "$lib/components/QuestionCard.svelte";
+	import { construct_svelte_component } from "svelte/internal";
+    
+    
+    const questionTemp = {
+        id:"tstst-2015-1",
+        source:"USA TSTST 2015 P1",
+        statement:"Lorem ipsum dolor sit amet consectetur. Ultrices amet euismod lectus fames ac donec sit vulputate auctor.",
+        country:"USA",
+        tags:["algebra", "geometry", "deez-nuts", "algebra", "geometry", "deez-nuts"]
+    }
+
+    const pageMax = 10;
+    var displayedPageNo: {value:string, enabled:boolean}[] = []; // 1 ... n-2 n-1 n n+1 n+2 ... pageMax. represent ... by null
+    var displayedPageClickable: boolean[] = [];
+    var currPage = 0; // 0 indexed
+    // Updates `dissplayedPages` and `currPage`
+    const updatePageSelector = (currPage_: number) => {
+        currPage = currPage_;
+        var displayedPagesInt = []
+        displayedPagesInt.push(1)
+
+        const nPlus2 = Math.min(currPage_ + 1, pageMax - 2)
+
+        if (currPage_ - 3 < 2){
+            // first ... not needed
+            for (var i = 1; i <= nPlus2; ++i){
+                displayedPagesInt.push(i+1)
+            }
+        }
+        else{
+            // first ... needed
+            displayedPagesInt.push(null)
+            for (var i = currPage_ - 3; i <= nPlus2; ++i){            
+                displayedPagesInt.push(i+1)
+            }
+        }
+
+
+        if (nPlus2 + 2 >= pageMax){
+            // second ... not needed
+            displayedPagesInt.push(pageMax)
+        }
+        else {
+            // second ... needed
+            displayedPagesInt.push(null)
+            displayedPagesInt.push(pageMax)
+        }
+
+
+        displayedPageNo = [{
+            value: "<",
+            enabled: currPage != 1
+        }]
+        for (var i = 0; i < displayedPagesInt.length; ++i){
+            var toAppend = displayedPagesInt[i]
+            displayedPageNo.push({
+                value: (toAppend == null) ? "..." : toAppend.toString(),
+                enabled: toAppend != null
+        })
+        }
+        displayedPageNo.push({
+            value: ">",
+            enabled: currPage != pageMax
+        })
+    }
+
+    const onClickPageSelector = (clickedButton:string) => {
+        if (clickedButton == "<"){
+            updatePageSelector(currPage-1)
+        }
+        else if (clickedButton == ">"){
+            updatePageSelector(currPage+1)
+        }
+        else{
+            updatePageSelector(parseInt(clickedButton))
+        }
+    }
+
+    updatePageSelector(1)
 </script>
 
-<header>
+<header transition:fly="{{ y: 15, duration: 300 }}">
     <h1>
         Track Olympiad problems <br />
         with ease.
     </h1>
 </header>
 
-<section>
+<section transition:fly="{{ y: 15, duration: 300 }}">
     <div class="search">
         <SearchInput on:message={search}>
             <div class="menu">
@@ -59,13 +141,29 @@
         </SearchInput>
     </div>
 
-    {#each Array(10) as _}
-        <QuestionCard/>
-    {/each}
+    <div id="results">
+        {#each Array(10) as _}
+            <QuestionCard question={questionTemp}/>            
+        {/each}
+    </div>
+
+    <div id="pageSelector">
+        {#each displayedPageNo as pageString}
+            <button disabled={!pageString.enabled} 
+                    class:disabled={!pageString.enabled}
+                    class:current={pageString.value == currPage.toString()}
+                    class:side={pageString.value == "<" || pageString.value == ">"}
+                    on:click={() => onClickPageSelector(pageString.value)}
+            >
+                {pageString.value}
+            </button>
+        {/each}
+    </div>
+    
 </section>
 
 
-<QuestionCard/>
+
 
 <style>
     header {
@@ -160,6 +258,15 @@
     .search .menu > ul > li {
         list-style: none;
     }
+
+    #results {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap:wrap;
+        /* width: 100%; */
+        max-width: 61rem;
+    }
     
     .menu > ul > li > span {
         font-size: 0.72rem;        
@@ -175,5 +282,50 @@
 
     .menu > ul > li > span:nth-of-type(n + 2)::before {
         content: "・";
+    }
+
+    #pageSelector {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 3rem 0 2rem 0;
+        gap: 2rem;
+    }
+
+    #pageSelector > button {
+        display:grid;
+        place-items: center;
+
+        height: 3rem;
+        width: 3rem;
+        font-size: 1.5rem;
+        
+        background: none;
+        border-color: transparent;
+        border-radius: 100vmax;
+
+        color: var(--primary-color-300);
+        margin: 0rem, 1rem;
+        transition: all 0.1s ease-in-out;
+
+        font-family: var(--primary-font);
+    }
+
+    #pageSelector > button:not(.disabled):hover {
+        font-size: 1.3rem;
+        background: var(--primary-background-400);
+
+        cursor: pointer;
+    }
+
+    #pageSelector > button.current {
+        font-weight: bold;
+        background: var(--primary-background-400);
+        color: var(--primary-color-900)
+    }
+
+    #pageSelector > button.side {
+        font-weight: bold;
+        color: var(--primary-color-900)
     }
 </style>
