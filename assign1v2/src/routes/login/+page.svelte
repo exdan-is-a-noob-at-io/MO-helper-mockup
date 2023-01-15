@@ -45,7 +45,8 @@
 
 <style>
     main {
-        min-height: 100vh;
+        min-height: calc(100vh - 10.5rem);
+        padding-top: 10.5rem;
         display: grid;
         place-items: center;
     }

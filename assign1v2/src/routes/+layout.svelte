@@ -150,6 +150,7 @@
     }
 
     footer {
+        margin-top: 0.75rem;
         padding: 2.7rem 17.34rem 7.27rem 17.34rem;
         font-family: var(--primary-font);
         background: var(--primary-background-100);
