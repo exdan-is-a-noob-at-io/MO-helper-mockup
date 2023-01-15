@@ -2,7 +2,9 @@
     import searchIcon from "$lib/images/search.svg";
     import { createEventDispatcher } from "svelte";
 
-    let query = "";
+    export let queryInit:string;
+    let query:string = queryInit;
+
 
     const dispatch = createEventDispatcher();
 
